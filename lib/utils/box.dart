@@ -1,5 +1,4 @@
-
-import 'package:doanalong/utils/utils_src.dart';
+import 'package:node_flutter/utils/utils_src.dart';
 import 'package:get_storage/get_storage.dart';
 
 class BoxStorage {
@@ -51,13 +50,5 @@ class BoxStorage {
 
   static void clear() {
     box.erase();
-  }
-
-  static void getAllData() {
-    print(BoxStorage.boxUrl);
-    print(BoxStorage.boxPort);
-    print(BoxStorage.boxUsername);
-    print(BoxStorage.boxPassword);
-    print(BoxStorage.boxTopic);
   }
 }

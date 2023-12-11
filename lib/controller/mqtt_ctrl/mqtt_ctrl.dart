@@ -1,5 +1,5 @@
-import 'package:doanalong/routes/routes.dart';
-import 'package:doanalong/utils/utils_src.dart';
+import 'package:node_flutter/routes/routes.dart';
+import 'package:node_flutter/utils/utils_src.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

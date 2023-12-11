@@ -1,5 +1,5 @@
-import 'package:doanalong/controller/controller_src.dart';
-import 'package:doanalong/ui/ui_src.dart';
+import 'package:node_flutter/controller/controller_src.dart';
+import 'package:node_flutter/ui/ui_src.dart';
 import 'package:get/get.dart';
 
 abstract class Routes {

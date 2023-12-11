@@ -3,15 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
-import 'package:doanalong/components/node_components.dart';
-import 'package:doanalong/model/model_src.dart';
-import 'package:doanalong/routes/routes.dart';
-import 'package:doanalong/utils/utils_src.dart';
+import 'package:node_flutter/components/node_components.dart';
+import 'package:node_flutter/model/model_src.dart';
+import 'package:node_flutter/routes/routes.dart';
+import 'package:node_flutter/utils/utils_src.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:network_info_plus/network_info_plus.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class HomeCtrl extends GetxController {
@@ -31,28 +29,12 @@ class HomeCtrl extends GetxController {
 
   RxBool ifOffline = false.obs;
 
-  Rx<DataModel> dataModel = DataModel().obs;
+  RxList<DataModel> dataModel = <DataModel>[].obs;
 
   @override
   void onInit() async {
-    await getSocketUrl();
     await connect();
-    connectWebSocket();
     super.onInit();
-  }
-
-  Future<void> getSocketUrl() async {
-    final wifiIP = await NetworkInfo().getWifiIP(); // 192.168.1.43
-    url = "ws://$wifiIP:3000";
-  }
-
-  void connectWebSocket() {
-    try {
-      channel = IOWebSocketChannel.connect(Uri.parse(url));
-      isConnected.value = true;
-    } on Exception catch (e) {
-      logger.d(e);
-    }
   }
 
   Future<void> connect() async {
@@ -94,7 +76,10 @@ class HomeCtrl extends GetxController {
         final MqttPublishMessage message = c[0].payload as MqttPublishMessage;
         final String payload =
             MqttPublishPayload.bytesToStringAsString(message.payload.message);
-        dataModel.value = DataModel.fromJson(jsonDecode(payload));
+        Iterable l = json.decode(payload);
+        dataModel.value =
+            List<DataModel>.from(l.map((model) => DataModel.fromJson(model)));
+        logger.i(dataModel);
         // logger.i('Received message:$payload from topic: ${c[0].topic}>');
       },
     );

@@ -1,33 +1,58 @@
+import 'package:get/get.dart';
+
 class DataModel {
   DataModel({
-    this.temperature = 0,
-    this.humidity = 0,
-    this.uv = 0,
-    this.fineDust = 0,
-    this.cacbon = 0,
+    this.address = "",
+    this.data,
   });
 
-  final double temperature;
-  final double humidity;
-  final double uv;
-  final double fineDust;
-  final double cacbon;
+  String address;
+  Data? data;
+  RxBool isExpanded = false.obs;
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
     return DataModel(
-      temperature: json["temperature"] ?? 0,
-      humidity: json["humidity"] ?? 0,
-      uv: json["uv"] ?? 0,
-      fineDust: json["fineDust"] ?? 0,
-      cacbon: json["cacbon"] ?? 0,
+      address: json["address"] ?? "",
+      data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    )..isExpanded.value = false;
+  }
+
+  Map<String, dynamic> toJson() => {
+        "address": address,
+        "data": data?.toJson(),
+      };
+}
+
+class Data {
+  Data({
+    this.humi = "",
+    this.temp = "",
+    this.dust = "",
+    this.co2 = "",
+    this.uv = "",
+  });
+
+  String humi;
+  String temp;
+  String dust;
+  String co2;
+  String uv;
+
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      humi: json["Humi"] ?? "",
+      temp: json["Temp"] ?? "",
+      dust: json["Dust"] ?? "",
+      co2: json["Co2"] ?? "",
+      uv: json["Uv"] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "temperature": temperature,
-        "humidity": humidity,
-        "uv": uv,
-        "fineDust": fineDust,
-        "cacbon": cacbon,
+        "Humi": humi,
+        "Temp": temp,
+        "Dust": dust,
+        "Co2": co2,
+        "Uv": uv,
       };
 }
