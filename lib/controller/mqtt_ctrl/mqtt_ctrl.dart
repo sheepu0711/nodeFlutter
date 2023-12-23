@@ -7,7 +7,7 @@ class MqttCtrl extends GetxController {
   final formKey = GlobalKey<FormState>();
 
   final TextEditingController mqttUrl = TextEditingController()
-    ..text = 'test.mosquitto.org';
+    ..text = 'Mqtt.mysignage.vn';
 
   final TextEditingController mqttPort = TextEditingController()..text = '1883';
 
@@ -16,7 +16,7 @@ class MqttCtrl extends GetxController {
   final TextEditingController mqttPassword = TextEditingController();
 
   final TextEditingController mqttTopic = TextEditingController()
-    ..text = 'garden_guard_quac';
+    ..text = 'huong';
 
   void saveMqtt() {
     if (!formKey.currentState!.validate()) {

@@ -52,36 +52,42 @@ Widget _buildBody(HomeCtrl controller) {
   return Obx(
     () => Stack(
       children: [
-        SafeArea(
-          bottom: true,
-          child: controller.dataModel != []
-              ? SingleChildScrollView(
-                  child: ExpansionPanelList(
-                    expansionCallback: (int index, bool isExpanded) {
-                      controller.dataModel[index].isExpanded.toggle();
-                    },
-                    children: controller.dataModel
-                        .asMap()
-                        .entries
-                        .map(
-                          (e) => ExpansionPanel(
-                            headerBuilder:
-                                (BuildContext context, bool isExpanded) {
-                              return ListTile(
-                                title: Text(e.value.address),
-                              );
-                            },
-                            body: _buildNode(e.key, controller),
-                            isExpanded: e.value.isExpanded.value,
-                          ),
-                        )
-                        .toList(),
+        controller.dataModel.isNotEmpty
+            ? SafeArea(
+                bottom: true,
+                child: Obx(
+                  () => SingleChildScrollView(
+                    child: ExpansionPanelList(
+                      expansionCallback: (int index, bool isExpanded) {
+                        controller.dataModel[index].isExpanded.toggle();
+                        logger.i(controller.dataModel[index].isExpanded.value);
+
+                        // print(controller.dataModel);
+                      },
+                      children: controller.dataModel
+                          .toList()
+                          .asMap()
+                          .entries
+                          .map(
+                            (e) => ExpansionPanel(
+                              headerBuilder:
+                                  (BuildContext context, bool isExpanded) {
+                                return ListTile(
+                                  title: Text(e.value.address.toString()),
+                                );
+                              },
+                              body: _buildNode(e.value.address, controller),
+                              isExpanded: e.value.isExpanded.value,
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ),
-                )
-              : const Center(
-                  child: Text("Không có dữ liệu"),
                 ),
-        ),
+              )
+            : const Center(
+                child: Text("Không có dữ liệu"),
+              ),
         if (controller.isLoading.value == true) ..._buildLoadingForm(),
       ],
     ),
@@ -89,27 +95,30 @@ Widget _buildBody(HomeCtrl controller) {
 }
 
 Widget _buildDataSensor(int indexData, int indexList, HomeCtrl controller) {
+  int index = controller.dataModel.indexWhere(
+    (p0) => p0.address == indexList,
+  );
   switch (indexData) {
     case 0:
       // return _buildDHTSensor(controller.dataModel.value.temperature);
       return UtilWidget.buildText(
-        "Nhiệt độ: ${controller.dataModel[indexList].data!.temp}",
+        "Nhiệt độ: ${controller.dataModel[index].data?.value.temp}",
       );
     case 1:
       return UtilWidget.buildText(
-        "Độ ẩm: ${controller.dataModel[indexList].data!.humi}",
+        "Độ ẩm: ${controller.dataModel[index].data?.value.humi}",
       );
+    // case 2:
+    //   return UtilWidget.buildText(
+    //     "UV: ${controller.dataModel[indexList].data!.uv}",
+    //   );
     case 2:
       return UtilWidget.buildText(
-        "UV: ${controller.dataModel[indexList].data!.uv}",
+        "Lửa: ${controller.dataModel[index].data?.value.flame}",
       );
     case 3:
       return UtilWidget.buildText(
-        "Bụi mịn: ${controller.dataModel[indexList].data!.dust}",
-      );
-    case 4:
-      return UtilWidget.buildText(
-        "Co2: ${controller.dataModel[indexList].data!.co2}",
+        "Gas: ${controller.dataModel[index].data?.value.gas}",
       );
     default:
       return UtilWidget.buildText("Lỗi đọc dữ liệu");

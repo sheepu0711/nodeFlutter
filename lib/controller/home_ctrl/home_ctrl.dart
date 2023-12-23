@@ -76,10 +76,21 @@ class HomeCtrl extends GetxController {
         final MqttPublishMessage message = c[0].payload as MqttPublishMessage;
         final String payload =
             MqttPublishPayload.bytesToStringAsString(message.payload.message);
-        Iterable l = json.decode(payload);
-        dataModel.value =
-            List<DataModel>.from(l.map((model) => DataModel.fromJson(model)));
-        logger.i(dataModel);
+        DataModel dataMqtt = DataModel.fromJson(json.decode(payload));
+        // dataModel.value =
+        //     List<DataModel>.from(l.map((model) => DataModel.fromJson(model)));
+        if (dataModel
+            .map((element) => element.address)
+            .contains(dataMqtt.address)) {
+          int indexData = dataModel.indexWhere(
+            (p0) => p0.address == dataMqtt.address,
+          );
+          dataModel[indexData].data = dataMqtt.data;
+        } else {
+          dataModel.add(dataMqtt);
+        }
+        dataModel.sort((a, b) => a.address.compareTo(b.address));
+        // update(dataModel);
         // logger.i('Received message:$payload from topic: ${c[0].topic}>');
       },
     );
