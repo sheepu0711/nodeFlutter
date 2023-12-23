@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:node_flutter/components/node_components.dart';
 import 'package:node_flutter/model/model_src.dart';
 import 'package:node_flutter/routes/routes.dart';
@@ -10,47 +9,52 @@ import 'package:node_flutter/utils/utils_src.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 class HomeCtrl extends GetxController {
+  // Khai báo client kết nối tới broker
   final client = MqttServerClient(BoxStorage.boxUrl, '');
 
-  late final WebSocketChannel? channel;
-
-  late String url;
-
-  final RxInt currentIndex = 0.obs;
-
-  final notchBottomBarController = NotchBottomBarController(index: 0);
-
+  // Khai báo biến để kiểm tra trạng thái kết nối đến MQTT hay chưa
   RxBool isLoading = false.obs;
 
-  RxBool isConnected = false.obs;
-
-  RxBool ifOffline = false.obs;
-
+  // Khai báo biến để lưu trữ dữ liệu nhận được từ MQTT
   RxList<DataModel> dataModel = <DataModel>[].obs;
 
+  // Hàm được gọi khi màn hình được khởi tạo
   @override
   void onInit() async {
     await connect();
     super.onInit();
   }
 
+  // Kết nối đến MQTT từ các dữ liệu được lưu từ màn MQTT
   Future<void> connect() async {
+    // Hiển thị loading
+    isLoading.value = true;
+
+    // Lấy port
     client.port = int.parse(BoxStorage.boxPort);
-    client.logging(on: true);
-    client.secure = false;
+    // Thời gian giữ kết nối khi không có bản tin mới
     client.keepAlivePeriod = 20;
+
+    // Thời gian chờ kết nối
     client.connectTimeoutPeriod = 2000;
+
+    // Khai báo các hàm callback khi kết nối thành công, thất bại, ...
     client.onDisconnected = onDisconnected;
     client.onConnected = onConnected;
+
+    // Khai báo thông tin kết nối
     final connMess = MqttConnectMessage()
         .withClientIdentifier(DateTime.now().millisecondsSinceEpoch.toString())
         .withWillQos(MqttQos.atLeastOnce);
     client.connectionMessage = connMess;
-    isLoading.value = true;
+
+    // Thực hiện kết nối
+    // Đặt hàm trong try catch để bắt lỗi khi kết nối
+    // tránh ứng dụng bị crash
     try {
+      // Tiến hành kết nối với username, password
       await client.connect(BoxStorage.boxUsername, BoxStorage.boxPassword);
     } on NoConnectionException catch (e) {
       logger.i('client exception - $e');
@@ -62,23 +66,27 @@ class HomeCtrl extends GetxController {
   }
 
   void onConnected() {
-    logger.i('Connected');
+    // Hiển thị thanh thông báo ngắn ở dưới màn hình
     Get.showSnackbar(const GetSnackBar(
       title: 'Kết nối thành công',
       message: 'Đã kết nối thành công tới broker',
       duration: Duration(seconds: 3),
     ));
-
+    // Ẩn loading
     isLoading.value = false;
+    // Đăng ký lắng nghe các bản tin từ topic
     client.subscribe(BoxStorage.boxTopic, MqttQos.atLeastOnce);
+    // Thực hiện lắng nghe khi có dữ liệu mới từ MQTT truyền về
     client.updates?.listen(
       (List<MqttReceivedMessage<MqttMessage>> c) {
         final MqttPublishMessage message = c[0].payload as MqttPublishMessage;
         final String payload =
             MqttPublishPayload.bytesToStringAsString(message.payload.message);
+        // Parse dữ liệu từ String qua model DataModel
         DataModel dataMqtt = DataModel.fromJson(json.decode(payload));
-        // dataModel.value =
-        //     List<DataModel>.from(l.map((model) => DataModel.fromJson(model)));
+        // Kiểm tra xem dữ liệu đã có trong list chưa
+        // Nếu có rồi thì cập nhật lại data của dữ liệu
+        // Nếu chưa có thì thêm vào list
         if (dataModel
             .map((element) => element.address)
             .contains(dataMqtt.address)) {
@@ -89,16 +97,16 @@ class HomeCtrl extends GetxController {
         } else {
           dataModel.add(dataMqtt);
         }
+        // Sắp xếp lại theo thứ tự address
         dataModel.sort((a, b) => a.address.compareTo(b.address));
-        // update(dataModel);
-        // logger.i('Received message:$payload from topic: ${c[0].topic}>');
       },
     );
   }
 
   void onDisconnected() {
-    logger.i('Disconnected');
+    // Huỷ bỏ trang hiện tại và đến màn MQTT khi lỗi kết nối
     Get.offNamed(Routes.mqtt);
+    // Hiển thị thanh thông báo ngắn ở dưới màn hình
     Get.showSnackbar(
       const GetSnackBar(
         title: 'Lỗi kết nối',
@@ -108,19 +116,21 @@ class HomeCtrl extends GetxController {
     );
   }
 
-  Future<void> publishMessage({required String payload}) async {
-    final builder = MqttClientPayloadBuilder();
-    builder.addString(payload);
-    client.publishMessage(
-        "${BoxStorage.boxTopic}_send", MqttQos.atLeastOnce, builder.payload!);
-  }
+  // Future<void> publishMessage({required String payload}) async {
+  //   final builder = MqttClientPayloadBuilder();
+  //   builder.addString(payload);
+  //   client.publishMessage(
+  //       "${BoxStorage.boxTopic}_send", MqttQos.atLeastOnce, builder.payload!);
+  // }
 
+  // Đăng xuất (chuyển về màn hình MQTT)
   Future<void> logOut() async {
     client.disconnect();
     BoxStorage.clear();
     Get.offAllNamed('/mqtt');
   }
 
+  // Hiển thị 1 popup xác nhận đăng xuất hay không
   Future<void> showAlert() async {
     Get.dialog(NodeComponent.showDialog(this));
   }

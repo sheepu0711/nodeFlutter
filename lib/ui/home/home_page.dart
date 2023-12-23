@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:node_flutter/components/node_components.dart';
 import 'package:node_flutter/controller/controller_src.dart';
 import 'package:node_flutter/utils/util_widget.dart';
-import 'package:node_flutter/utils/utils_src.dart';
 
 part 'home_widget.dart';
 
 class HomePage extends GetView<HomeCtrl> {
   const HomePage({super.key});
 
+  // Khai báo controller của màn Home
   @override
   HomeCtrl get controller => Get.find<HomeCtrl>();
 

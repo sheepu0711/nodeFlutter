@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class NodeComponent {
+  // Khai báo các icon hiển thị trên màn hình Home
   static const Map<int, String> iconData = {
     0: "assets/svg/temperature.svg",
     1: "assets/svg/humidity.svg",
-    2: "assets/svg/uv.svg",
+    2: "assets/svg/fire.svg",
     3: "assets/svg/dust.svg",
-    4: "assets/svg/cacbon.svg",
+    // 4: "assets/svg/cacbon.svg",
   };
   static Widget showDialog(HomeCtrl controller) {
     return AlertDialog(

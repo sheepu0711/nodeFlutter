@@ -9,49 +9,59 @@ class MqttPage extends GetView<MqttCtrl> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        bottom: true,
-        child: Form(
-          key: controller.formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Center(
-                child: Text('MQTT'),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: Center(
+          child: SingleChildScrollView(
+            child: SafeArea(
+              bottom: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Center(
+                    child: Text('MQTT'),
+                  ),
+                  sdsSizedBox10,
+                  Form(
+                    key: controller.formKeyUrl,
+                    child: _buildTextFields(
+                      title: "Địa chỉ Url",
+                      isValidate: true,
+                      controller: controller.mqttUrl,
+                    ),
+                  ),
+                  _buildTextFields(
+                    title: "Port",
+                    controller: controller.mqttPort,
+                  ),
+                  _buildTextFields(
+                    title: "Tên đăng nhập",
+                    controller: controller.mqttUsername,
+                  ),
+                  _buildTextFields(
+                    title: "Mật khẩu",
+                    controller: controller.mqttPassword,
+                  ),
+                  Form(
+                    key: controller.formKeyTopic,
+                    child: _buildTextFields(
+                      title: "Topic",
+                      isValidate: true,
+                      controller: controller.mqttTopic,
+                    ),
+                  ),
+                  sdsSizedBox10,
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.saveMqtt();
+                    },
+                    child: const Text('Start Connect'),
+                  ),
+                ],
               ),
-              sdsSizedBox10,
-              _buildTextFields(
-                title: "Địa chỉ Url",
-                isValidate: true,
-                controller: controller.mqttUrl,
-              ),
-              _buildTextFields(
-                title: "Port",
-                controller: controller.mqttPort,
-              ),
-              _buildTextFields(
-                title: "Tên đăng nhập",
-                controller: controller.mqttUsername,
-              ),
-              _buildTextFields(
-                title: "Mật khẩu",
-                controller: controller.mqttPassword,
-              ),
-              _buildTextFields(
-                title: "Topic",
-                isValidate: true,
-                controller: controller.mqttTopic,
-              ),
-              sdsSizedBox10,
-              ElevatedButton(
-                onPressed: () {
-                  controller.saveMqtt();
-                },
-                child: const Text('Start Connect'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

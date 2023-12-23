@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MqttCtrl extends GetxController {
-  final formKey = GlobalKey<FormState>();
+  // Kiểm tra xem người dùng đã nhập dữ liệu hay chưa
+  final formKeyUrl = GlobalKey<FormState>();
+  final formKeyTopic = GlobalKey<FormState>();
 
+  // Khai báo url, port, username, password, topic
   final TextEditingController mqttUrl = TextEditingController()
     ..text = 'Mqtt.mysignage.vn';
 
@@ -19,9 +22,12 @@ class MqttCtrl extends GetxController {
     ..text = 'huong';
 
   void saveMqtt() {
-    if (!formKey.currentState!.validate()) {
+    // Kiểm tra xem người dùng đã nhập dữ liệu hay chưa
+    if (!formKeyUrl.currentState!.validate() ||
+        !formKeyTopic.currentState!.validate()) {
       return;
     }
+    // Lưu các dữ liệu vào bộ nhớ máy
     BoxStorage.setBoxUrl(mqttUrl.text.trim());
 
     BoxStorage.setBoxPort(mqttPort.text.trim());
@@ -34,6 +40,7 @@ class MqttCtrl extends GetxController {
 
     BoxStorage.setHaveMqtt(true);
 
+    // Chuyển sang màn hình Home
     Get.offNamed(Routes.home);
   }
 }
