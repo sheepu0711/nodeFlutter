@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:node_flutter/model/enum.dart';
+import 'package:nodeflutter/model/enum.dart';
 
 class UtilWidget {
   static Widget buildText(String title) {

@@ -1,4 +1,4 @@
-import 'package:node_flutter/utils/utils_src.dart';
+import 'package:nodeflutter/utils/utils_src.dart';
 import 'package:get_storage/get_storage.dart';
 
 class BoxStorage {

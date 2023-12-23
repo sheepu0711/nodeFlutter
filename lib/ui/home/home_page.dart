@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:node_flutter/controller/controller_src.dart';
-import 'package:node_flutter/routes/routes.dart';
-import 'package:node_flutter/utils/util_widget.dart';
+import 'package:nodeflutter/controller/controller_src.dart';
+import 'package:nodeflutter/routes/routes.dart';
+import 'package:nodeflutter/utils/util_widget.dart';
 
 part 'home_widget.dart';
 

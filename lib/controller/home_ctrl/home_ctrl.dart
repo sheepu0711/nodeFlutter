@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
-import 'package:node_flutter/components/node_components.dart';
-import 'package:node_flutter/controller/node_ctrl/node_ctrl.dart';
-import 'package:node_flutter/model/model_src.dart';
-import 'package:node_flutter/routes/routes.dart';
-import 'package:node_flutter/utils/utils_src.dart';
+import 'package:nodeflutter/components/node_components.dart';
+import 'package:nodeflutter/controller/node_ctrl/node_ctrl.dart';
+import 'package:nodeflutter/model/model_src.dart';
+import 'package:nodeflutter/routes/routes.dart';
+import 'package:nodeflutter/utils/utils_src.dart';
 import 'package:get/get.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';

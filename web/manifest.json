@@ -1,6 +1,6 @@
 {
-    "name": "node_flutter",
-    "short_name": "node_flutter",
+    "name": "nodeflutter",
+    "short_name": "nodeflutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

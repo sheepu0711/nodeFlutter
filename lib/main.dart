@@ -1,11 +1,16 @@
-import 'package:node_flutter/routes/routes.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nodeflutter/firebase_options.dart';
+import 'package:nodeflutter/routes/routes.dart';
 
 Future main() async {
   await GetStorage.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }

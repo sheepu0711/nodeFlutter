@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "754562508062",
+    "project_id": "nodeflutter-c525b",
+    "storage_bucket": "nodeflutter-c525b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754562508062:android:253430e47e4900163fd50f",
+        "android_client_info": {
+          "package_name": "com.example.node_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVcqWEiGR24QB76mH5hOGY8mNuWOvWF6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:754562508062:android:7e33dee415c49dd03fd50f",
+        "android_client_info": {
+          "package_name": "com.example.nodeflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVcqWEiGR24QB76mH5hOGY8mNuWOvWF6A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

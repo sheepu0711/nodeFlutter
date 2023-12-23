@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:node_flutter/model/data_model.dart';
-import 'package:node_flutter/utils/utils_src.dart';
+import 'package:nodeflutter/model/data_model.dart';
+import 'package:nodeflutter/utils/utils_src.dart';
 
 class NodeCtrl extends GetxController {
   RxList<DataModel> dataModel = <DataModel>[].obs;

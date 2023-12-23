@@ -1,7 +1,7 @@
-import 'package:node_flutter/controller/controller_src.dart';
-import 'package:node_flutter/controller/node_ctrl/node_ctrl.dart';
-import 'package:node_flutter/ui/node/node_page.dart';
-import 'package:node_flutter/ui/ui_src.dart';
+import 'package:nodeflutter/controller/controller_src.dart';
+import 'package:nodeflutter/controller/node_ctrl/node_ctrl.dart';
+import 'package:nodeflutter/ui/node/node_page.dart';
+import 'package:nodeflutter/ui/ui_src.dart';
 import 'package:get/get.dart';
 
 abstract class Routes {

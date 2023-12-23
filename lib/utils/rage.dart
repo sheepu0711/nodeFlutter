@@ -1,4 +1,4 @@
-import 'package:node_flutter/model/enum.dart';
+import 'package:nodeflutter/model/enum.dart';
 
 class RageNode {
   static Humidity humidity(String value) {

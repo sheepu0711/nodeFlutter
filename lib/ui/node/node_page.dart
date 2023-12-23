@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:node_flutter/components/node_components.dart';
+import 'package:nodeflutter/components/node_components.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:node_flutter/ui/node/linechart.dart';
-import 'package:node_flutter/utils/rage.dart';
+import 'package:nodeflutter/ui/node/linechart.dart';
+import 'package:nodeflutter/utils/rage.dart';
 
 import '../../utils/util_widget.dart';
 import '../../controller/node_ctrl/node_ctrl.dart';
@@ -21,28 +21,28 @@ class NodePage extends GetView<NodeCtrl> {
         title: const Text("Node"),
         centerTitle: true,
         backgroundColor: Colors.blue.withOpacity(0.4),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // controller.showAlert();
-            },
-            icon: const Icon(Icons.logout),
-          ),
-        ],
       ),
       body: Obx(
-        () => controller.dataModel.isNotEmpty
-            ? SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildGraph(controller),
-                    _buildNode(controller.node, controller),
-                  ],
+        () => Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/background.jpeg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: controller.dataModel.isNotEmpty
+              ? SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildGraph(controller),
+                      _buildNode(controller.node, controller),
+                    ],
+                  ),
+                )
+              : Center(
+                  child: UtilWidget.buildText("Không có dữ liệu"),
                 ),
-              )
-            : Center(
-                child: UtilWidget.buildText("Không có dữ liệu"),
-              ),
+        ),
       ),
       extendBody: true,
     );
@@ -67,8 +67,9 @@ Widget _buildNode(int indexList, NodeCtrl controller) {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.white,
           ),
+          color: Colors.white,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
