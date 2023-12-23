@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:node_flutter/components/node_components.dart';
+import 'package:node_flutter/controller/node_ctrl/node_ctrl.dart';
 import 'package:node_flutter/model/model_src.dart';
 import 'package:node_flutter/routes/routes.dart';
 import 'package:node_flutter/utils/utils_src.dart';
@@ -28,8 +29,6 @@ class HomeCtrl extends GetxController {
   RxBool isConnected = false.obs;
 
   RxBool ifOffline = false.obs;
-
-  RxList<DataModel> dataModel = <DataModel>[].obs;
 
   @override
   void onInit() async {
@@ -77,9 +76,9 @@ class HomeCtrl extends GetxController {
         final String payload =
             MqttPublishPayload.bytesToStringAsString(message.payload.message);
         Iterable l = json.decode(payload);
-        dataModel.value =
+        nodeCtrl?.dataModel.value =
             List<DataModel>.from(l.map((model) => DataModel.fromJson(model)));
-        logger.i(dataModel);
+        // logger.i(dataModel);
         // logger.i('Received message:$payload from topic: ${c[0].topic}>');
       },
     );
@@ -95,6 +94,13 @@ class HomeCtrl extends GetxController {
         duration: Duration(seconds: 3),
       ),
     );
+  }
+
+  NodeCtrl? get nodeCtrl {
+    if (Get.isRegistered<NodeCtrl>()) {
+      return Get.find<NodeCtrl>();
+    }
+    return null;
   }
 
   Future<void> publishMessage({required String payload}) async {

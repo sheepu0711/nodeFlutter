@@ -12,74 +12,34 @@ List<Widget> _buildLoadingForm() {
   ];
 }
 
-Widget _buildNode(int indexList, HomeCtrl controller) {
-  return GridView.builder(
-    shrinkWrap: true,
-    itemCount: NodeComponent.iconData.length,
-    physics: const NeverScrollableScrollPhysics(),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-    ),
-    itemBuilder: (context, index) {
-      return Container(
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.grey.withOpacity(0.5),
-          ),
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Center(
-              child: SvgPicture.asset(
-                NodeComponent.iconData[index] ?? "",
-                // ignore: deprecated_member_use
-                color: Colors.blue.withOpacity(0.4),
-                height: 100,
-              ),
-            ),
-            _buildDataSensor(index, indexList, controller),
-          ],
-        ),
-      );
-    },
-  );
-}
-
 Widget _buildBody(HomeCtrl controller) {
   return Obx(
     () => Stack(
       children: [
+        Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/background.jpeg"),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
         SafeArea(
           bottom: true,
-          child: controller.dataModel != []
-              ? SingleChildScrollView(
-                  child: ExpansionPanelList(
-                    expansionCallback: (int index, bool isExpanded) {
-                      controller.dataModel[index].isExpanded.toggle();
-                    },
-                    children: controller.dataModel
-                        .asMap()
-                        .entries
-                        .map(
-                          (e) => ExpansionPanel(
-                            headerBuilder:
-                                (BuildContext context, bool isExpanded) {
-                              return ListTile(
-                                title: Text(e.value.address),
-                              );
-                            },
-                            body: _buildNode(e.key, controller),
-                            isExpanded: e.value.isExpanded.value,
-                          ),
-                        )
-                        .toList(),
-                  ),
+          child: controller.nodeCtrl?.dataModel != []
+              ? Row(
+                  children: [
+                    _buildNodeButton('Node 1'),
+                    _buildNodeButton('Node 2'),
+                    _buildNodeButton('Node 3'),
+                  ],
                 )
-              : const Center(
-                  child: Text("Không có dữ liệu"),
+              : SizedBox(
+                  height: Get.height,
+                  width: Get.width,
+                  child: Center(
+                    child: UtilWidget.buildText("Không có dữ liệu"),
+                  ),
                 ),
         ),
         if (controller.isLoading.value == true) ..._buildLoadingForm(),
@@ -88,30 +48,45 @@ Widget _buildBody(HomeCtrl controller) {
   );
 }
 
-Widget _buildDataSensor(int indexData, int indexList, HomeCtrl controller) {
-  switch (indexData) {
-    case 0:
-      // return _buildDHTSensor(controller.dataModel.value.temperature);
-      return UtilWidget.buildText(
-        "Nhiệt độ: ${controller.dataModel[indexList].data!.temp}",
-      );
-    case 1:
-      return UtilWidget.buildText(
-        "Độ ẩm: ${controller.dataModel[indexList].data!.humi}",
-      );
-    case 2:
-      return UtilWidget.buildText(
-        "UV: ${controller.dataModel[indexList].data!.uv}",
-      );
-    case 3:
-      return UtilWidget.buildText(
-        "Bụi mịn: ${controller.dataModel[indexList].data!.dust}",
-      );
-    case 4:
-      return UtilWidget.buildText(
-        "Co2: ${controller.dataModel[indexList].data!.co2}",
-      );
-    default:
-      return UtilWidget.buildText("Lỗi đọc dữ liệu");
+int getNode(String text) {
+  if (text == 'Node 1') {
+    return 1;
+  } else if (text == 'Node 2') {
+    return 2;
+  } else {
+    return 3;
   }
+}
+
+Widget _buildNodeButton(String text) {
+  return Expanded(
+    child: InkWell(
+      onTap: () {
+        Get.toNamed(
+          Routes.node,
+          arguments: getNode(text),
+        );
+      },
+      child: Container(
+        height: 100,
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: Colors.white,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
