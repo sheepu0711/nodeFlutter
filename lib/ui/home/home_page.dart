@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:node_flutter/components/node_components.dart';
 import 'package:node_flutter/controller/controller_src.dart';
+import 'package:node_flutter/utils/rage.dart';
 import 'package:node_flutter/utils/util_widget.dart';
 
 part 'home_widget.dart';

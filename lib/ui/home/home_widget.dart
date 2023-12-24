@@ -76,8 +76,8 @@ Widget _buildNode(int indexList, HomeCtrl controller) {
           color: Colors.grey.withOpacity(0.5),
         ),
       ),
-      child: Stack(
-        alignment: Alignment.center,
+      child: Column(
+        // alignment: Alignment.center,
         children: [
           Center(
             child: SvgPicture.asset(
@@ -88,6 +88,7 @@ Widget _buildNode(int indexList, HomeCtrl controller) {
             ),
           ),
           _buildDataSensor(index, indexList, controller),
+          _buildMaxRange(index, indexList, controller),
         ],
       ),
     ),
@@ -118,6 +119,70 @@ Widget _buildDataSensor(int indexData, int indexList, HomeCtrl controller) {
       return UtilWidget.buildText(
         "Gas: ${controller.dataModel[index].data?.value.gas}",
       );
+    default:
+      return UtilWidget.buildText("Lỗi đọc dữ liệu");
+  }
+}
+
+Widget _buildMaxRange(int indexData, int indexList, HomeCtrl controller) {
+  int index = controller.dataModel.indexWhere(
+    (p0) => p0.address == indexList,
+  );
+  switch (indexData) {
+    case 0:
+      // return _buildDHTSensor(controller.dataModel.value.temperature);
+      return Text(
+        UtilWidget.getTemp(
+          RageNode.temperature(controller.dataModel[index].data!.value.temp),
+        ),
+        style: TextStyle(
+          color: UtilWidget.getColorTemp(
+            RageNode.temperature(controller.dataModel[index].data!.value.temp),
+          ),
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
+        ),
+      );
+    case 1:
+      return Text(
+        UtilWidget.getHumi(
+          RageNode.humidity(controller.dataModel[index].data!.value.humi),
+        ),
+        style: TextStyle(
+          color: UtilWidget.getColorHumi(
+            RageNode.humidity(controller.dataModel[index].data!.value.humi),
+          ),
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
+        ),
+      );
+    case 2:
+      return Text(
+        UtilWidget.getFlame(
+          RageNode.flame(controller.dataModel[index].data!.value.flame),
+        ),
+        style: TextStyle(
+          color: UtilWidget.getColorFlame(
+            RageNode.flame(controller.dataModel[index].data!.value.flame),
+          ),
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
+        ),
+      );
+    case 3:
+      return Text(
+        UtilWidget.getGas(
+          RageNode.gas(controller.dataModel[index].data!.value.gas),
+        ),
+        style: TextStyle(
+          color: UtilWidget.getColorGas(
+            RageNode.gas(controller.dataModel[index].data!.value.gas),
+          ),
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
+        ),
+      );
+
     default:
       return UtilWidget.buildText("Lỗi đọc dữ liệu");
   }
