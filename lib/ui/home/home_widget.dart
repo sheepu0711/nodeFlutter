@@ -26,13 +26,15 @@ Widget _buildBody(HomeCtrl controller) {
         ),
         SafeArea(
           bottom: true,
-          child: controller.nodeCtrl?.dataModel != []
-              ? Row(
-                  children: [
-                    _buildNodeButton('Node 1'),
-                    _buildNodeButton('Node 2'),
-                    _buildNodeButton('Node 3'),
-                  ],
+          child: controller.dataModel.isNotEmpty
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: controller.dataModel.length,
+                  itemBuilder: (context, index) =>
+                      _buildNodeButton(controller, index),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
                 )
               : SizedBox(
                   height: Get.height,
@@ -48,42 +50,31 @@ Widget _buildBody(HomeCtrl controller) {
   );
 }
 
-int getNode(String text) {
-  if (text == 'Node 1') {
-    return 1;
-  } else if (text == 'Node 2') {
-    return 2;
-  } else {
-    return 3;
-  }
-}
-
-Widget _buildNodeButton(String text) {
-  return Expanded(
-    child: InkWell(
-      onTap: () {
-        Get.toNamed(
-          Routes.node,
-          arguments: getNode(text),
-        );
-      },
-      child: Container(
-        height: 100,
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
+Widget _buildNodeButton(HomeCtrl controller, int index) {
+  return InkWell(
+    onTap: () {
+      Get.toNamed(
+        Routes.node,
+        arguments: controller.dataModel[index],
+      );
+      // print(controller.dataModel[index]);
+    },
+    child: Container(
+      height: 100,
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: Colors.white,
-          ),
         ),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
+      ),
+      child: Center(
+        child: Text(
+          "Node ${controller.dataModel[index].address}",
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
           ),
         ),
       ),

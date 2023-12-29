@@ -38,12 +38,14 @@ class UtilWidget {
 
   static String getDust(Dust dust) {
     switch (dust) {
-      case Dust.green:
+      case Dust.good:
         return "Tốt";
-      case Dust.yellow:
+      case Dust.normal:
+        return "Trung bình";
+      case Dust.bad:
         return "Cảnh báo";
-      case Dust.red:
-        return "Xấu";
+      case Dust.danger:
+        return "Nguy hiểm";
       default:
         return "Lỗi";
     }
@@ -64,10 +66,16 @@ class UtilWidget {
 
   static String getUv(Uv uv) {
     switch (uv) {
-      case Uv.safe:
+      case Uv.good:
         return "Tốt";
       case Uv.danger:
         return "Xấu";
+      case Uv.medium:
+        return "Trung bình";
+      case Uv.high:
+        return "Cảnh báo";
+      case Uv.veryHigh:
+        return "Nguy hiểm";
       default:
         return "Lỗi";
     }
@@ -101,11 +109,13 @@ class UtilWidget {
 
   static Color getColorDust(Dust dust) {
     switch (dust) {
-      case Dust.green:
+      case Dust.good:
         return Colors.green;
-      case Dust.yellow:
+      case Dust.normal:
         return Colors.yellow;
-      case Dust.red:
+      case Dust.bad:
+        return Colors.orange;
+      case Dust.danger:
         return Colors.red;
       default:
         return Colors.black;
@@ -127,9 +137,15 @@ class UtilWidget {
 
   static Color getColorUv(Uv uv) {
     switch (uv) {
-      case Uv.safe:
+      case Uv.good:
         return Colors.green;
       case Uv.danger:
+        return Colors.red;
+      case Uv.medium:
+        return Colors.yellow;
+      case Uv.high:
+        return Colors.orange;
+      case Uv.veryHigh:
         return Colors.red;
       default:
         return Colors.black;

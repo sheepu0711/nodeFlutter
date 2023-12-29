@@ -2,17 +2,17 @@ import 'package:get/get.dart';
 
 class DataModel {
   DataModel({
-    this.address = "",
+    this.address = 0,
     this.data,
   });
 
-  String address;
+  int address;
   Data? data;
   RxBool isExpanded = false.obs;
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
     return DataModel(
-      address: json["address"] ?? "",
+      address: json["address"],
       data: json["data"] == null ? null : Data.fromJson(json["data"]),
     )..isExpanded.value = false;
   }

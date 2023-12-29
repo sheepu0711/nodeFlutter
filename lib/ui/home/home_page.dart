@@ -16,7 +16,7 @@ class HomePage extends GetView<HomeCtrl> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Multi Node"),
+        title: const Text("Node Lora"),
         centerTitle: true,
         backgroundColor: Colors.blue.withOpacity(0.4),
         actions: [

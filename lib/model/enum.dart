@@ -10,19 +10,23 @@ enum Humidity {
   medium,
 }
 
-enum Dust{
-  green,
-  yellow,
-  red,
+enum Dust {
+  good,
+  normal,
+  bad,
+  danger,
 }
 
-enum Co2{
+enum Co2 {
   red,
   green,
   danger,
 }
 
-enum Uv{
-  safe,
+enum Uv {
+  good,
+  medium,
+  high,
+  veryHigh,
   danger,
 }

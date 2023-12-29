@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MqttCtrl extends GetxController {
-  final formKey = GlobalKey<FormState>();
+  final formKeyUrl = GlobalKey<FormState>();
+  final formKeyTopic = GlobalKey<FormState>();
 
   final TextEditingController mqttUrl = TextEditingController()
-    ..text = 'test.mosquitto.org';
+    ..text = 'Mqtt.mysignage.vn';
 
   final TextEditingController mqttPort = TextEditingController()..text = '1883';
 
@@ -16,10 +17,11 @@ class MqttCtrl extends GetxController {
   final TextEditingController mqttPassword = TextEditingController();
 
   final TextEditingController mqttTopic = TextEditingController()
-    ..text = 'garden_guard_quac';
+    ..text = 'duong';
 
   void saveMqtt() {
-    if (!formKey.currentState!.validate()) {
+    if (!formKeyUrl.currentState!.validate() ||
+        !formKeyTopic.currentState!.validate()) {
       return;
     }
     BoxStorage.setBoxUrl(mqttUrl.text.trim());

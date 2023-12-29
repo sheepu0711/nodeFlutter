@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:nodeflutter/components/node_components.dart';
 import 'package:nodeflutter/controller/node_ctrl/node_ctrl.dart';
 import 'package:nodeflutter/model/model_src.dart';
 import 'package:nodeflutter/routes/routes.dart';
+import 'package:nodeflutter/utils/fake_data.dart';
 import 'package:nodeflutter/utils/utils_src.dart';
-import 'package:get/get.dart';
-import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class HomeCtrl extends GetxController {
@@ -22,9 +23,9 @@ class HomeCtrl extends GetxController {
 
   final RxInt currentIndex = 0.obs;
 
-  final notchBottomBarController = NotchBottomBarController(index: 0);
-
   RxBool isLoading = false.obs;
+
+  RxList<DataModel> dataModel = <DataModel>[].obs;
 
   RxBool isConnected = false.obs;
 
@@ -38,7 +39,7 @@ class HomeCtrl extends GetxController {
 
   Future<void> connect() async {
     client.port = int.parse(BoxStorage.boxPort);
-    client.logging(on: true);
+    // client.logging(on: true);
     client.secure = false;
     client.keepAlivePeriod = 20;
     client.connectTimeoutPeriod = 2000;
@@ -75,13 +76,45 @@ class HomeCtrl extends GetxController {
         final MqttPublishMessage message = c[0].payload as MqttPublishMessage;
         final String payload =
             MqttPublishPayload.bytesToStringAsString(message.payload.message);
-        Iterable l = json.decode(payload);
-        nodeCtrl?.dataModel.value =
-            List<DataModel>.from(l.map((model) => DataModel.fromJson(model)));
-        // logger.i(dataModel);
-        // logger.i('Received message:$payload from topic: ${c[0].topic}>');
+        DataModel dataMqtt = DataModel.fromJson(json.decode(payload));
+        if (dataModel
+            .map((element) => element.address)
+            .contains(dataMqtt.address)) {
+          int indexData = dataModel.indexWhere(
+            (p0) => p0.address == dataMqtt.address,
+          );
+          dataModel[indexData].data = dataMqtt.data;
+        } else {
+          dataModel.add(dataMqtt);
+        }
+        nodeCtrl?.dataModel.value = dataMqtt;
+        nodeCtrl?.nodeModel.update((val) {
+          val?.yValue = FakeData.dataList;
+          val?.dataValue.removeAt(0);
+          val?.dataValue.add(double.parse(NodeComponent.getLastValue(dataMqtt, val.index)));
+        });
+
+        // Sắp xếp lại theo thứ tự address
+        dataModel.sort((a, b) => a.address.compareTo(b.address));
       },
     );
+  }
+
+
+  List<String> get getDataString {
+    return [
+      DateFormat('HH:mm:ss')
+          .format(DateTime.now().subtract(const Duration(seconds: 15))),
+      DateFormat('HH:mm:ss')
+          .format(DateTime.now().subtract(const Duration(seconds: 12))),
+      DateFormat('HH:mm:ss')
+          .format(DateTime.now().subtract(const Duration(seconds: 9))),
+      DateFormat('HH:mm:ss')
+          .format(DateTime.now().subtract(const Duration(seconds: 6))),
+      DateFormat('HH:mm:ss')
+          .format(DateTime.now().subtract(const Duration(seconds: 3))),
+      DateFormat('HH:mm:ss').format(DateTime.now())
+    ];
   }
 
   void onDisconnected() {
