@@ -244,7 +244,7 @@ Widget _buildChart(NodeCtrl controller) {
       lineBarsData: lineBarsData1(controller),
       minX: 0,
       maxX: 14,
-      maxY: 4,
+      maxY: 5,
       minY: 0,
     ),
     duration: const Duration(milliseconds: 250),
@@ -375,15 +375,13 @@ FlBorderData get borderData => FlBorderData(
     );
 
 LineChartBarData lineChartBarData1_1(NodeCtrl controller) {
-  double range = (controller.nodeModel.value.dataRange.last -
-          controller.nodeModel.value.dataRange.first) /
-      4;
+  double range = (controller.nodeModel.value.dataRange.last - 0) / 4;
   List<FlSpot> spots = [];
   for (int i = 0; i < controller.nodeModel.value.dataValue.length; i++) {
     spots.add(
       FlSpot(
         (i * 2),
-        controller.nodeModel.value.dataValue[i] / range,
+        (controller.nodeModel.value.dataValue[i] / range) + 1,
       ),
     );
   }

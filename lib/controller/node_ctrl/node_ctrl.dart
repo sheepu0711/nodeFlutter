@@ -29,7 +29,6 @@ class NodeCtrl extends GetxController {
   void changeData(int index) {
     nodeModel.value.dataLabel = getLabel(index);
     nodeModel.value.dataRange = getRange(index);
-    nodeModel.value.yValue = FakeData.dataList;
     nodeModel.value.dataValue = getDataValue(index);
     nodeModel.value.index = index;
     // dataValueLocal.value = nodeModel.value.dataValue;

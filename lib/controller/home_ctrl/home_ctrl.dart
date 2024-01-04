@@ -91,7 +91,8 @@ class HomeCtrl extends GetxController {
         nodeCtrl?.nodeModel.update((val) {
           val?.yValue = FakeData.dataList;
           val?.dataValue.removeAt(0);
-          val?.dataValue.add(double.parse(NodeComponent.getLastValue(dataMqtt, val.index)));
+          val?.dataValue.add(
+              double.parse(NodeComponent.getLastValue(dataMqtt, val.index)));
         });
 
         // Sắp xếp lại theo thứ tự address
@@ -99,7 +100,6 @@ class HomeCtrl extends GetxController {
       },
     );
   }
-
 
   List<String> get getDataString {
     return [

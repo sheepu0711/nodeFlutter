@@ -1,11 +1,11 @@
 import 'package:nodeflutter/model/enum.dart';
 
 class RageNode {
-  static List<double> humidityRange = [20, 40, 60, 80, 100];
-  static List<double> temperatureRange = [12, 22, 28, 35, 40];
+  static List<double> humidityRange = [0, 25, 50, 75, 100];
+  static List<double> temperatureRange = [0, 10, 20, 30, 40];
   static List<double> dustRange = [0, 13.875, 27.75, 41.625, 55.5];
-  static List<double> co2Range = [0, 2.5, 5, 7.5, 10];
-  static List<double> uvRange = [0, 2.5, 5, 7.5, 10];
+  static List<double> co2Range = [0, 3.125, 6.25, 9.375, 12.5];
+  static List<double> uvRange = [0, 3.125, 6.25, 9.375, 12.5];
 
   static Humidity humidity(String value) {
     double humi = double.parse(value);
